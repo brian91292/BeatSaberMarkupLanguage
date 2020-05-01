@@ -20,7 +20,9 @@ namespace BeatSaberMarkupLanguage.ViewControllers
         {
             string ns = type.Namespace;
             string name = type.Name;
-            return (ns.Length > 0 ? ns + "." : "") + name + ".bsml";
+            string resourceNoExtension = (ns.Length > 0 ? ns + "." : "") + name;
+            //First we check with no extension in case DependentUpon is being used on the embedded resource
+            return type.Assembly.GetManifestResourceNames().Contains(resourceNoExtension) ? resourceNoExtension : $"{resourceNoExtension}.bsml";
         }
         public virtual string FallbackContent => @"<bg>
                                                      <vertical child-control-height='false' child-control-width='true' child-align='UpperCenter' pref-width='110' pad-left='3' pad-right='3'>
